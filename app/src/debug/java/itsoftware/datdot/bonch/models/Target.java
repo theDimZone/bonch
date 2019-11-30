@@ -10,11 +10,11 @@ public class Target {
     private int age;
     private int level; //1, 2, etc
     private GeoPoint geopoint;
-    private GeoPoint[] geopoint_cover;
+    private ArrayList<GeoPoint> geopoint_cover = new ArrayList<GeoPoint>();
     private int reward;
     private ArrayList<Question> questions = new ArrayList<Question>();
 
-    public Target(String id, String type, int age, int level, GeoPoint geopoint, GeoPoint[] geopoint_cover, int reward, ArrayList<Question> questions) {
+    public Target(String id, String type, int age, int level, GeoPoint geopoint, ArrayList<GeoPoint> geopoint_cover, int reward, ArrayList<Question> questions) {
         this.id = id;
         this.type = type;
         this.age = age;
@@ -65,11 +65,11 @@ public class Target {
         this.geopoint = geopoint;
     }
 
-    public GeoPoint[] getGeopoint_cover() {
+    public ArrayList<GeoPoint> getGeopoint_cover() {
         return geopoint_cover;
     }
 
-    public void setGeopoint_cover(GeoPoint[] geopoint_cover) {
+    public void setGeopoint_cover(ArrayList<GeoPoint> geopoint_cover) {
         this.geopoint_cover = geopoint_cover;
     }
 

@@ -4,5 +4,8 @@
     <string name="turn_on_geo">Geolocation is offline</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="incorrect">Incorrect</string>
+    <string name="correct">Correct</string>
     <string name="turn_on_message">Please, turn on geolocation!</string>
 </resources>
+

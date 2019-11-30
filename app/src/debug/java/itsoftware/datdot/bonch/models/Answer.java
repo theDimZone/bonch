@@ -27,7 +27,7 @@ public class Answer {
         this.value = value;
     }
 
-    public boolean isCorrect() {
+    public boolean getisCorrect() {
         return isCorrect;
     }
 

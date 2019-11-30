@@ -16,6 +16,10 @@ public class Question {
         this.answers = answers;
     }
 
+    public Question() {
+
+    }
+
     public String getId() {
         return id;
     }

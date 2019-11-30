@@ -5,4 +5,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="turn_on_message">Please, turn on geolocation!</string>
+
+   <!-- <string name="google_status_fmt"> </string>
+    <string name="firebase_status_fmt"> </string>-->
 </resources>

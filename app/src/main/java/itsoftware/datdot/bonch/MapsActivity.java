@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,11 +23,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
+import itsoftware.datdot.bonch.data.workers.Target;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    boolean isFirst = true;
     private GoogleMap mMap;
+    private Location locationStart;
+    private FirebaseFirestore db;
+    private ArrayList<Target> targets;
     private LocationManager locationManager;
     private static final String TAG = "MapsActivity";
     private FirebaseAuth mAuth;
@@ -37,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         mAuth = FirebaseAuth.getInstance();
 
+        db = FirebaseFirestore.getInstance();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -51,6 +67,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (isGeoDisabled()) {
             showAlertDialog();
         }
+    }
+
+    private void getCurrentLocation(double lat, double lon) {
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
+            Address address = geocoder.getFromLocation(lat, lon, 1).get(0);
+            String cityAddress = address.getLocality().toLowerCase(Locale.ENGLISH);
+            CameraPosition.Builder builder = new CameraPosition.Builder();
+            builder.zoom(17);
+            builder.tilt(65);
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.INVISIBLE);
+            getTargets(cityAddress);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void getTargets(String cityAddress) {
+        targets = new ArrayList<>();
+        db.collection("cities").document(cityAddress)
+                .collection("targets").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot document :
+                                queryDocumentSnapshots.getDocuments()) {
+                            targets.add(document.toObject(Target.class));
+                            for (Target target : targets) {
+                                LatLng latLng = new LatLng(
+                                        target.getLocation().getLatitude(),
+                                        target.getLocation().getLongitude());
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(latLng);
+                                markerOptions.title(target.getName());
+                                mMap.addMarker(markerOptions);
+                            }
+                        }
+                    }
+                });
     }
 
     private void showAlertDialog() {
@@ -119,13 +175,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (location == null || mMap == null) return;
 
         LatLng there = new LatLng(location.getLatitude(), location.getLongitude());
+        if (isFirst) {
+            isFirst = false;
+            getCurrentLocation(there.latitude, there.longitude);
+        }
         CameraPosition.Builder builder = new CameraPosition.Builder();
-        builder.zoom(17);
-        builder.tilt(65);
         builder.target(there);
+        builder.bearing(locationStart.bearingTo(location));
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
+        locationStart = location;
     }
 
     @Override

@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         map:uiCompass="false"
-        map:uiRotateGestures="true"
+        map:uiRotateGestures="false"
         map:uiScrollGestures="false"
-        map:uiTiltGestures="true"
+        map:uiTiltGestures="false"
         map:uiZoomControls="false"
-        map:uiZoomGestures="true"
+        map:uiZoomGestures="false"
         tools:context=".MapsActivity" />
 
     <ProgressBar

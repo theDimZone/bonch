@@ -1,14 +1,25 @@
 package itsoftware.datdot.bonch.models;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class City {
     private String id;
     private String name;
+    private ArrayList<Target> targets = new ArrayList<Target>();
 
-    public City(String id,
-                String name) {
+    public ArrayList<Target> getTargets() {
+        return targets;
+    }
 
+    public void setTargets(ArrayList<Target> targets) {
+        this.targets = targets;
+    }
+
+    public City(String id, String name, ArrayList<Target> targets) {
         this.id = id;
         this.name = name;
+        this.targets = targets;
     }
 
     public String getId() {

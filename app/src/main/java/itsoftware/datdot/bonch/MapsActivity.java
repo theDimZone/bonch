@@ -1,4 +1,4 @@
-package itsoftware.datdot.bonchhack;
+package itsoftware.datdot.bonch;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -31,11 +31,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import itsoftware.datdot.bonchhack.data.workers.Target;
+import itsoftware.datdot.bonch.data.workers.Target;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     boolean isFirst = true;
     private GoogleMap mMap;
+    private Location locationStart;
     private FirebaseFirestore db;
     private ArrayList<Target> targets;
     private LocationManager locationManager;
@@ -65,6 +66,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
             Address address = geocoder.getFromLocation(lat, lon, 1).get(0);
             String cityAddress = address.getLocality().toLowerCase(Locale.ENGLISH);
+            CameraPosition.Builder builder = new CameraPosition.Builder();
+            builder.zoom(17);
+            builder.tilt(65);
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.INVISIBLE);
             getTargets(cityAddress);
         } catch (Exception ignored) {
         }
@@ -165,13 +172,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             getCurrentLocation(there.latitude, there.longitude);
         }
         CameraPosition.Builder builder = new CameraPosition.Builder();
-        builder.zoom(17);
-        builder.tilt(65);
         builder.target(there);
-        builder.bearing(location.getBearing());
+        builder.bearing(locationStart.bearingTo(location));
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
+        locationStart = location;
     }
 
     @Override

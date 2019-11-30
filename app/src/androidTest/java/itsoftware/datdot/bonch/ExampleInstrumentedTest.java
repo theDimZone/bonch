@@ -1,4 +1,4 @@
-package itsoftware.datdot.bonchhack;
+package itsoftware.datdot.bonch;
 
 import android.content.Context;
 

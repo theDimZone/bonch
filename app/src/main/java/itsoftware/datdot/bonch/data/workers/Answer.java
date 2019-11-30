@@ -1,4 +1,4 @@
-package itsoftware.datdot.bonchhack.data.workers;
+package itsoftware.datdot.bonch.data.workers;
 
 public class Answer {
     private String answer;

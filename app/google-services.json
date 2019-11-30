@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:790464759008:android:cffb6c2dc619dedb56fc85",
+        "android_client_info": {
+          "package_name": "itsoftware.datdot.bonch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790464759008-v022hs1dpi9ekgtqq2mo8g6l84mvdft6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOJa4_cJfpFKMg0ZCC4gcrYj1aiZwx1FM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790464759008-v022hs1dpi9ekgtqq2mo8g6l84mvdft6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:790464759008:android:e4fb31fbcd67d15756fc85",
         "android_client_info": {
           "package_name": "itsoftware.datdot.bonchhack"

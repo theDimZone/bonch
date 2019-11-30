@@ -1,4 +1,4 @@
-package itsoftware.datdot.bonch;
+package itsoftware.datdot.bonchhack;
 
 import org.junit.Test;
 

@@ -11,15 +11,20 @@ public class User {
     private int level;
 
     private  ArrayList<String> achievments = new ArrayList<String>();
+    private ArrayList<String> passed_questions = new ArrayList<String>();
+    private ArrayList<String> visited_target = new ArrayList<String>();
 
     public User( String nickname, String id,
-                 int experience, int age, int level, ArrayList<String> achievments) {
+                 int experience, int age, int level, ArrayList<String> achievments,
+                 ArrayList<String> passed_questions, ArrayList<String> visited_target) {
         this.nickname = nickname;
         this.id = id;
         this.experience = experience;
         this.age = age;
         this.level = level;
         this.achievments = achievments;
+        this.passed_questions = passed_questions;
+        this.visited_target = visited_target;
 
     }
 

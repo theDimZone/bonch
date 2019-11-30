@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "20926703588-egc9rjhsm58tcs9ahpur00l0jbuem3p2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "itsoftware.datdot.bonch",
+            "certificate_hash": "a8f14af59114c77f770ded8b2cb98798c8412055"
+          }
+        },
+        {
           "client_id": "20926703588-ec2cbvr0ufll8hav99vnvh7b6tnftvi6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

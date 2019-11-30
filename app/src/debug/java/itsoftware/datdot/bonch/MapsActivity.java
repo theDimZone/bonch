@@ -1,6 +1,10 @@
 package itsoftware.datdot.bonch;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,6 +35,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (isGeoDisabled()) {
+            showAlertDialog();
+        }
+    }
+
+    private void showAlertDialog() {
+        AlertDialog turnOnGeo = new AlertDialog.Builder(MapsActivity.this)
+                .setTitle(getString(R.string.turn_on_geo))
+                .setMessage(getString(R.string.turn_on_message))
+                .setPositiveButton(getResources().getString(R.string.yes),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                startActivity(new Intent(android.provider.
+                                        Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            }
+                        })
+                .setNegativeButton(getString(R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                .create();
+        turnOnGeo.show();
+    }
+
+    public boolean isGeoDisabled() {
+        LocationManager mLocationManager = (LocationManager) getApplicationContext()
+                .getSystemService(Context.LOCATION_SERVICE);
+        boolean mIsGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean mIsNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return !mIsGPSEnabled && !mIsNetworkEnabled;
     }
 
     @SuppressLint("MissingPermission")
@@ -73,6 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.tilt(65);
         builder.target(there);
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

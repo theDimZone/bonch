@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Bonch</string>
     <string name="title_activity_maps">Bonch</string>
+    <string name="turn_on_geo">Geolocation is offline</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="turn_on_message">Please, turn on geolocation!</string>
 </resources>

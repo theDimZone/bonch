@@ -2,6 +2,7 @@ package itsoftware.datdot.bonch.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class City {
     private String id;
@@ -46,7 +47,7 @@ public class City {
         City city = (City) o;
 
         if (!id.equals(city.id)) return false;
-        return name != null ? name.equals(city.name) : city.name == null;
+        return Objects.equals(name, city.name);
     }
 
     @Override

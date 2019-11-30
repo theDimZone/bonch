@@ -4,19 +4,18 @@ import java.util.ArrayList;
 
 
 public class User {
-    private String nickname;
     private String id;
-    private int experience;
+    private String nickname;
     private int age;
     private int level;
+    private int experience;
+    private ArrayList<String> achievments;
+    private ArrayList<String> visited_target;
+    private ArrayList<String> passed_questions;
 
-    private  ArrayList<String> achievments = new ArrayList<String>();
-    private ArrayList<String> passed_questions = new ArrayList<String>();
-    private ArrayList<String> visited_target = new ArrayList<String>();
-
-    public User( String nickname, String id,
-                 int experience, int age, int level, ArrayList<String> achievments,
-                 ArrayList<String> passed_questions, ArrayList<String> visited_target) {
+    public User(String nickname, String id,
+                int experience, int age, int level, ArrayList<String> achievments,
+                ArrayList<String> passed_questions, ArrayList<String> visited_target) {
         this.nickname = nickname;
         this.id = id;
         this.experience = experience;
@@ -51,15 +50,19 @@ public class User {
     public String getId() {
         return id;
     }
+
     public String getNickname() {
         return nickname;
     }
+
     public int getExperience() {
         return experience;
     }
+
     public int getAge() {
         return age;
     }
+
     public int getLevel() {
         return level;
     }

@@ -3,12 +3,12 @@ package itsoftware.datdot.bonch.models;
 public class Answer {
     private String id;
     private String value;
-    private boolean is_correct;
+    private boolean isCorrect;
 
-    public Answer(String id, String value, boolean is_correct) {
+    public Answer(String id, String value, boolean isCorrect) {
         this.id = id;
         this.value = value;
-        this.is_correct = is_correct;
+        this.isCorrect = isCorrect;
     }
 
     public String getId() {
@@ -27,12 +27,12 @@ public class Answer {
         this.value = value;
     }
 
-    public boolean isIs_correct() {
-        return is_correct;
+    public boolean isCorrect() {
+        return isCorrect;
     }
 
-    public void setIs_correct(boolean is_correct) {
-        this.is_correct = is_correct;
+    public void setCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class SignInActivity extends AppCompatActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        if(currentUser != null)  {
+        if (currentUser != null) {
             mAuth.signOut();
             mGoogleSignInClient.signOut();
 
@@ -70,11 +70,12 @@ public class SignInActivity extends AppCompatActivity implements
         if (user != null) {
             //mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
             //mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-           // Intent intent = new Intent(this, MapsActivity.class);
-            Intent intent = new Intent(this, UsersActivity.class);
-            //intent.putExtra(EXTRA_MESSAGE, message);
-            startActivity(intent);
 
+           //Intent intent = new Intent(this, MapsActivity.class);
+           // Intent intent = new Intent(this, UsersActivity.class);
+            //intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(new Intent(this, MapsActivity.class));
+            finish();
         }
     }
 

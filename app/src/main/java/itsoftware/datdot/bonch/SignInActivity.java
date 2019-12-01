@@ -22,10 +22,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import itsoftware.datdot.bonch.data.workers.CurrentState;
 import itsoftware.datdot.bonch.data.workers.User;
 
 public class SignInActivity extends AppCompatActivity implements
@@ -56,7 +58,7 @@ public class SignInActivity extends AppCompatActivity implements
         if (currentUser != null) {
             //mAuth.signOut();
             //mGoogleSignInClient.signOut();
-            updateUI(currentUser);
+            updateUI();
 
         }
 
@@ -81,7 +83,7 @@ public class SignInActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if(task.getResult().isEmpty()) {
-                                User userdata = new User();
+                                final User userdata = new User();
                                 userdata.setEmail(user.getEmail());
                                 userdata.setNickname(user.getDisplayName());
                                 userdata.setZoomer(true);
@@ -97,12 +99,30 @@ public class SignInActivity extends AppCompatActivity implements
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                                 if (task.isSuccessful()) {
-                                                    updateUI(user);
+                                                    //CurrentState state = CurrentState.getInstance();
+                                                    //state.setUser(userdata);
+
+                                                    updateUI();
                                                 }
                                             }
                                         });
                             } else {
-                                updateUI(user);
+                                //CurrentState state = CurrentState.getInstance();
+                                //state.setUser(userdata);
+                                /*
+                                User fetched = new User();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    fetched = document.toObject(User.class);
+                                    Log.d(TAG, fetched.getEmail());
+                                }
+                                Log.d(TAG, "EMAIL WAS");
+
+                                CurrentState state = CurrentState.getInstance();
+                                state.setUser(fetched);
+                                */
+
+                                updateUI();
+
                             }
                         }
                     }
@@ -110,11 +130,10 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            startActivity(new Intent(this, MapsActivity.class));
+    private void updateUI() {
+            startActivity(new Intent(this, RecommendationActivity.class));
             finish();
-        }
+
     }
 
 
@@ -134,7 +153,7 @@ public class SignInActivity extends AppCompatActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
+                            //updateUI();
                         }
 
                     }

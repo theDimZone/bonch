@@ -1,50 +1,63 @@
 {
   "project_info": {
-    "project_number": "20926703588",
-    "firebase_url": "https://bonch-664e3.firebaseio.com",
-    "project_id": "bonch-664e3",
-    "storage_bucket": "bonch-664e3.appspot.com"
+    "project_number": "790464759008",
+    "firebase_url": "https://bonchhack-94c16.firebaseio.com",
+    "project_id": "bonchhack-94c16",
+    "storage_bucket": "bonchhack-94c16.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:20926703588:android:c8c23ad1692d97be7949f1",
+        "mobilesdk_app_id": "1:790464759008:android:cffb6c2dc619dedb56fc85",
         "android_client_info": {
           "package_name": "itsoftware.datdot.bonch"
         }
       },
       "oauth_client": [
         {
-          "client_id": "20926703588-egc9rjhsm58tcs9ahpur00l0jbuem3p2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "itsoftware.datdot.bonch",
-            "certificate_hash": "a8f14af59114c77f770ded8b2cb98798c8412055"
-          }
-        },
-        {
-          "client_id": "20926703588-ec2cbvr0ufll8hav99vnvh7b6tnftvi6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "itsoftware.datdot.bonch",
-            "certificate_hash": "da15437a7221c981a2ed451b6ddda019f316ad9b"
-          }
-        },
-        {
-          "client_id": "20926703588-6tthdmn2eqgdpahqc3v2rfbbr05mktvf.apps.googleusercontent.com",
+          "client_id": "790464759008-v022hs1dpi9ekgtqq2mo8g6l84mvdft6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCxyMwENQo-py38MW_QnJhZZvtbSR5Yqd0"
+          "current_key": "AIzaSyCOJa4_cJfpFKMg0ZCC4gcrYj1aiZwx1FM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "20926703588-6tthdmn2eqgdpahqc3v2rfbbr05mktvf.apps.googleusercontent.com",
+              "client_id": "790464759008-v022hs1dpi9ekgtqq2mo8g6l84mvdft6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790464759008:android:e4fb31fbcd67d15756fc85",
+        "android_client_info": {
+          "package_name": "itsoftware.datdot.bonchhack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790464759008-v022hs1dpi9ekgtqq2mo8g6l84mvdft6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOJa4_cJfpFKMg0ZCC4gcrYj1aiZwx1FM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790464759008-v022hs1dpi9ekgtqq2mo8g6l84mvdft6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,11 +1,20 @@
 <resources>
-    <string name="app_name">Bonch</string>
-    <string name="title_activity_maps">Bonch</string>
-    <string name="turn_on_geo">Geolocation is offline</string>
+    <string name="app_name">Bonch.Hack</string>
+    <string name="title_activity_maps">Bonch.Hack</string>
+    <string name="turn_on_geo">Turn on Geo</string>
+    <string name="turn_on_message">Please, turn on geolocation!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="incorrect">Incorrect</string>
     <string name="correct">Correct</string>
-    <string name="turn_on_message">Please, turn on geolocation!</string>
+    <string name="textview">TextView</string>
+    <string name="button">Button</string>
+<!--    <string name="textview">TextView</string>-->
+<!--    <string name="button">Button</string>-->
+<!--    <string name="textview">TextView</string>-->
+<!--    <string name="button">Button</string>-->
+<!--    <string name="textview">TextView</string>-->
+<!--    <string name="button">Button</string>-->
+
 </resources>
 

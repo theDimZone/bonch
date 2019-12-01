@@ -27,7 +27,7 @@ public class UsersActivity extends AppCompatActivity {
     private class OnClickListenerListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            TextView myTextView = findViewById(R.id.myTextView);
+            TextView myTextView = findViewById(R.id.textView3);
 
             switch (view.getId()) {
                 case R.id.button:

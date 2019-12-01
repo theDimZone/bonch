@@ -16,7 +16,7 @@ import itsoftware.datdot.bonch.models.Answer;
 import itsoftware.datdot.bonch.models.Question;
 
 public class QuestionsActivity extends AppCompatActivity {
-    public int i = 0, o = 0;
+    public int i = 0, o = 1;
     public ArrayList<Question> questions = new ArrayList<Question>();
     public String idtarget;
     //public Question momentQuestion = questions.get(i);

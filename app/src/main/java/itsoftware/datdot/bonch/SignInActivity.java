@@ -32,36 +32,28 @@ import itsoftware.datdot.bonch.data.workers.User;
 
 public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener {
-    private static final String TAG = "SignInActivity";
+
     private static final int RC_SIGN_IN = 9001;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
-
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        db = FirebaseFirestore.getInstance();
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        if (currentUser != null) {
-            //mAuth.signOut();
-            //mGoogleSignInClient.signOut();
-            updateUI();
-
-        }
-
+        if (currentUser != null) updateUI();
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 
@@ -81,7 +73,7 @@ public class SignInActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if(task.getResult().isEmpty()) {
+                            if (task.getResult().isEmpty()) {
                                 final User userdata = new User();
                                 userdata.setEmail(user.getEmail());
                                 userdata.setNickname(user.getDisplayName());
@@ -97,64 +89,30 @@ public class SignInActivity extends AppCompatActivity implements
                                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                if (task.isSuccessful()) {
-                                                    //CurrentState state = CurrentState.getInstance();
-                                                    //state.setUser(userdata);
-
-                                                    updateUI();
-                                                }
+                                                if (task.isSuccessful()) updateUI();
                                             }
                                         });
-                            } else {
-                                //CurrentState state = CurrentState.getInstance();
-                                //state.setUser(userdata);
-                                /*
-                                User fetched = new User();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    fetched = document.toObject(User.class);
-                                    Log.d(TAG, fetched.getEmail());
-                                }
-                                Log.d(TAG, "EMAIL WAS");
-
-                                CurrentState state = CurrentState.getInstance();
-                                state.setUser(fetched);
-                                */
-
-                                updateUI();
-
-                            }
+                            } else updateUI();
                         }
                     }
                 });
     }
 
-
     private void updateUI() {
-            startActivity(new Intent(this, RecommendationActivity.class));
-            finish();
-
+        startActivity(new Intent(this, RecommendationActivity.class));
+        finish();
     }
 
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             registerOrLogin(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            //updateUI();
                         }
-
                     }
                 });
     }
@@ -168,19 +126,13 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "signInWithCredential:onActivity");
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-                // ...
+            } catch (ApiException ignored) {
             }
         }
     }

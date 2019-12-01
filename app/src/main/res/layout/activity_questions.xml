@@ -1,62 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="invisible"
-    tools:visibility="visible">
+    android:layout_height="625dp">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:layout_marginTop="190dp"
+        android:layout_marginStart="345dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="342dp"
+        tools:layout_editor_absoluteY="366dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="290dp"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="516dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button"
+        android:layout_marginTop="290dp"
+        android:layout_marginStart="300dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="557dp"
+        tools:layout_editor_absoluteY="408dp" />
 
     <TextView
         android:id="@+id/textView_question"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
         android:gravity="center_vertical"
         android:text="@string/textview"
         android:textSize="18sp"
         android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="135dp"
         tools:visibility="invisible" />
 
     <CheckBox
         android:id="@+id/checkBox_answer"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="70dp"
+        android:layout_height="-20dp"
         android:text="@string/checkbox"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="390dp"
+        tools:layout_editor_absoluteX="331dp"
+        tools:layout_editor_absoluteY="250dp"
         tools:visibility="invisible" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="625dp">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="210dp"
-            tools:layout_editor_absoluteY="157dp" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="38dp"
-            tools:layout_editor_absoluteY="299dp" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="358dp"
-            tools:layout_editor_absoluteY="298dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</RelativeLayout>

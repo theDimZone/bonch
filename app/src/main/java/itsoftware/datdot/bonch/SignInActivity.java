@@ -99,8 +99,8 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void updateUI() {
-        startActivity(new Intent(this, RecommendationActivity.class));
-        finish();
+            startActivity(new Intent(this, MapsActivity.class));
+            finish();
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

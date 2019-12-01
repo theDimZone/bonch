@@ -12,6 +12,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 import itsoftware.datdot.bonch.models.Answer;
@@ -51,6 +58,24 @@ public class QuestionsActivity extends AppCompatActivity {
         listener = new OnCheckedChangeListener();
         checkBox.setOnCheckedChangeListener(listener);
 
+       // private FirebaseFirestore db;
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference("message"); // Key
+
+        // Attach listener
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Retrieve latest value
+                String message = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error handling
+            }
+        });
+
         // load
         //questions = new ArrayList<Question>();
         ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -58,6 +83,7 @@ public class QuestionsActivity extends AppCompatActivity {
         Answer answer1 = new Answer("hi", "test", true);
         answers.add(answer);
         answers.add(answer1);
+        //questions = db.collection("questions");
         Question question = new Question("test", "tezt", 50, answers);
         Question question1 = new Question("test", "call", 60, answers);
         questions.add(question);

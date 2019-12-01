@@ -40,11 +40,9 @@ public class RecommendationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation);
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        //CurrentState state = CurrentState.getInstance();
-        //Log.d(TAG, state.getUser().getNickname());
         getTargets(city);
     }
 
@@ -59,7 +57,6 @@ public class RecommendationActivity extends AppCompatActivity {
                                 queryDocumentSnapshots.getDocuments()) {
                             targets.add(document.toObject(Target.class));
                         }
-
                         setList(targets);
                     }
                 });
@@ -86,12 +83,11 @@ public class RecommendationActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private Target getTargetById(String id) {
-        for(Target target : targets) {
-            if(target.getId() == id) return target;
+        for (Target target : targets) {
+            if (target.getId().equals(id)) return target;
         }
         return new Target();
     }

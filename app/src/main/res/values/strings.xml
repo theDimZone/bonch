@@ -20,9 +20,10 @@
     <!--    <string name="button">Button</string>-->
 
     <string-array name="screen_array">
-        <item>Screen 1</item>
-        <item>Screen 2</item>
-        <item>Screen 3</item>
+        <item>Вопросы</item>
+        <item>Настройки</item>
+        <item>Мой профиль</item>
+        <item>Рекоммендации для посещения</item>
     </string-array>
 </resources>
 

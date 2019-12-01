@@ -249,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String longitude = getIntent().getStringExtra("longitude");
         String latitude = getIntent().getStringExtra("latitude");
 
-        if (!latitude.isEmpty()) {
+        if (latitude != null) {
             look = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
         }
 

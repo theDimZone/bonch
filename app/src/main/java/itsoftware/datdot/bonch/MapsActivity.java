@@ -15,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -144,17 +145,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 != PackageManager.PERMISSION_GRANTED;
     }
 
-    private void getCurrentLocation(double lat, double lon) {
+    private void getCurrentLocation(Location location) {
         try {
             Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
-            Address address = geocoder.getFromLocation(lat, lon, 1).get(0);
+            Address address = geocoder.getFromLocation(location.getLatitude(),
+                    location.getLongitude(), 1).get(0);
             String cityAddress = address.getLocality().toLowerCase(Locale.ENGLISH);
-            getTargets(cityAddress);
+            getTargets(cityAddress, location);
         } catch (Exception ignored) {
         }
     }
 
-    public void getTargets(String cityAddress) {
+    public void getTargets(String cityAddress, final Location location) {
         targets = new ArrayList<>();
         db.collection("cities").document(cityAddress)
                 .collection("targets").get()
@@ -172,6 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 markerOptions.position(latLng);
                                 markerOptions.title(target.getName());
                                 mMap.addMarker(markerOptions);
+//                                if (targets != null) findTheNearestPoint(location);
                             }
                         }
                     }
@@ -243,29 +246,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void showLocation(Location location) {
         if (location == null || mMap == null) return;
 
-        LatLng there = new LatLng(location.getLatitude(), location.getLongitude());
-        LatLng look = there;
-
-        String longitude = getIntent().getStringExtra("longitude");
-        String latitude = getIntent().getStringExtra("latitude");
-
-        if (!latitude.isEmpty()) {
-            look = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
-        }
-
         if (isFirst) {
             isFirst = false;
-            getCurrentLocation(there.latitude, there.longitude);
-            CameraPosition.Builder builder = new CameraPosition.Builder();
-            builder.bearing(location.getBearing());
-            builder.target(look);
-            builder.zoom(17);
-            builder.tilt(65);
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
-            ProgressBar progressBar = findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.INVISIBLE);
+            double latitude = getIntent().getDoubleExtra("latitude", -666);
+            double longitude = getIntent().getDoubleExtra("longitude", 666);
+
+            if (latitude != -666 & longitude != 666) {
+                ProgressBar progressBar = findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.INVISIBLE);
+
+                LatLng there = new LatLng(latitude, longitude);
+                CameraPosition.Builder builder = new CameraPosition.Builder();
+                builder.target(there);
+                builder.zoom(17);
+                builder.tilt(65);
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+            }
         }
-        findTheNearestPoint(location);
+        getCurrentLocation(location);
     }
 
     @Override
@@ -295,21 +293,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         if (minLength < 0.001) {
             if (isInArea(location)) {
-
                 startActivity(new Intent(this, QuestionsActivity.class));
                 finish();
-
             }
         }
     }
 
     private boolean isInArea(Location location) {
-        boolean isInArea = false;
+        boolean isFirst = true;
+        double min_x = 0;
+        double max_x = 0;
+        double min_y = 0;
+        double max_y = 0;
 
-        return isInArea;
-    }
-
-    private boolean isInLocate() {
-        return false;
+        for (Target target : targets) {
+            if (isFirst) {
+                isFirst = false;
+                min_x = target.getLocation().getLatitude();
+                max_x = target.getLocation().getLatitude();
+                min_y = target.getLocation().getLongitude();
+                max_y = target.getLocation().getLongitude();
+            } else {
+                double next_x = target.getLocation().getLatitude();
+                double next_y = target.getLocation().getLongitude();
+                if (next_x < min_x) {
+                    min_x = next_x;
+                } else if (next_x > max_x) max_x = next_x;
+                if (next_y < min_y) {
+                    min_y = next_y;
+                } else if (next_y > max_y) max_y = next_y;
+            }
+        }
+        double current_X = location.getLatitude();
+        double current_Y = location.getLongitude();
+        return current_X >= min_x && current_X <= max_x && current_Y >= min_y && current_Y <= max_y;
     }
 }

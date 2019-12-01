@@ -77,8 +77,8 @@ public class RecommendationActivity extends AppCompatActivity {
                 //отправить в мапс таргет
 
                 Intent intent = new Intent(self, MapsActivity.class);
-                intent.putExtra("latitude", String.valueOf(target.getLocation().getLatitude()));
-                intent.putExtra("longitude", String.valueOf(target.getLocation().getLongitude()));
+                intent.putExtra("latitude", target.getLocation().getLatitude());
+                intent.putExtra("longitude", target.getLocation().getLongitude());
                 startActivity(intent);
                 finish();
             }

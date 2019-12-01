@@ -52,7 +52,6 @@ public class SignInActivity extends AppCompatActivity implements
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(getString(R.string.google_maps_key))
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -115,49 +114,11 @@ public class SignInActivity extends AppCompatActivity implements
                         }
                     }
                 });
-        /*
-        db.collection("users")
-                .whereEqualTo("email", user.getEmail())
-                .addSnapshotListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (DocumentSnapshot document :
-                                queryDocumentSnapshots.getDocuments()) {
-                            //document.toObject(Target.class);
-                        }
-                    }
-                });
-*/
-        /*
-        db.collection("users").document(user.getEmail())
-                .collection("targets").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (DocumentSnapshot document :
-                                queryDocumentSnapshots.getDocuments()) {
-                            targets.add(document.toObject(Target.class));
-                            for (Target target : targets) {
-                                LatLng latLng = new LatLng(
-                                        target.getLocation().getLatitude(),
-                                        target.getLocation().getLongitude());
-                                MarkerOptions markerOptions = new MarkerOptions();
-                                markerOptions.position(latLng);
-                                markerOptions.title(target.getName());
-                                mMap.addMarker(markerOptions);
-                            }
-                        }
-                    }
-                });
-                */
     }
 
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            //mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            //mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-            //intent.putExtra(EXTRA_MESSAGE, message);
             startActivity(new Intent(this, MapsActivity.class));
             finish();
         }
@@ -177,15 +138,12 @@ public class SignInActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             registerOrLogin(user);
-                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
-                        // ...
                     }
                 });
     }

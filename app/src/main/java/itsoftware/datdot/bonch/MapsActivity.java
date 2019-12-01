@@ -1,19 +1,23 @@
 package itsoftware.datdot.bonch;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -55,9 +59,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
+        if (checkGeo()) {
+            ActivityCompat.requestPermissions(MapsActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
         if (isGeoDisabled()) {
             showAlertDialog();
         }
+    }
+
+    private boolean checkGeo() {
+        return ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED;
     }
 
     private void getCurrentLocation(double lat, double lon) {
@@ -163,14 +180,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (isFirst) {
             isFirst = false;
             getCurrentLocation(there.latitude, there.longitude);
+            CameraPosition.Builder builder = new CameraPosition.Builder();
+            builder.bearing(location.getBearing());
+            builder.target(there);
+            builder.zoom(17);
+            builder.tilt(65);
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.INVISIBLE);
         }
-        CameraPosition.Builder builder = new CameraPosition.Builder();
-        builder.target(there);
-        builder.zoom(17);
-        builder.tilt(65);
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
+        findTheNearestPoint(location);
     }
 
     @Override
@@ -180,5 +199,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setTrafficEnabled(false);
         mMap.setMyLocationEnabled(true);
         mMap.setBuildingsEnabled(true);
+    }
+
+    private void findTheNearestPoint(Location location) {
+        boolean isFirst = true;
+        double minLength = 0;
+        for (Target target : targets) {
+            double x_1 = target.getLocation().getLatitude();
+            double y_1 = target.getLocation().getLongitude();
+            double x_2 = location.getLatitude();
+            double y_2 = location.getLongitude();
+            if (isFirst) {
+                isFirst = false;
+                minLength = Math.sqrt(Math.pow(x_2 - x_1, 2) + Math.pow(y_2 - y_1, 2));
+            } else {
+                double nextLength = Math.sqrt(Math.pow(x_2 - x_1, 2) + Math.pow(y_2 - y_1, 2));
+                if (nextLength < minLength) minLength = nextLength;
+            }
+        }
+        if (minLength < 0.001) {
+            if (isInArea(location)) {
+
+            }
+        }
+    }
+
+    private boolean isInArea(Location location) {
+        boolean isInArea = true;
+
+        return isInArea;
+    }
+
+    private boolean isInLocate() {
+        return false;
     }
 }

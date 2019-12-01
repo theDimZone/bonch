@@ -10,143 +10,72 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import itsoftware.datdot.bonch.models.Answer;
-import itsoftware.datdot.bonch.models.Question;
+import itsoftware.datdot.bonch.data.workers.Question;
+import itsoftware.datdot.bonch.data.workers.Target;
+import itsoftware.datdot.bonch.data.workers.User;
 
 
 public class QuestionsActivity extends AppCompatActivity {
-    public int i = 0, o = 1;
-    public ArrayList<Question> questions = new ArrayList<Question>();
-    public String idtarget;
+    //public ArrayList<Question> questions = new ArrayList<Question>();
+    //public String idtarget;
     //public Question momentQuestion = questions.get(i);
-    public ArrayList<Answer> momentQuestion;
+    //public ArrayList<Answer> momentQuestion;
+    public FirebaseFirestore db;
+    public ArrayList<Question> questions;
+    public int current = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
 
+        db = FirebaseFirestore.getInstance();
 
-        Button button = findViewById(R.id.button5);
-        Button button1 = findViewById(R.id.button6);
+        String target_id = getIntent().getStringExtra("target");
 
-        TextView myTextView = findViewById(R.id.textView6);
-        TextView myTextView1 = findViewById(R.id.textView_question);
-        CheckBox checkBox = findViewById(R.id.checkBox_answer);
+        db.collection("targets")
+                .whereEqualTo("id", target_id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Target target = new Target();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                target = document.toObject(Target.class);
+                            }
 
-        myTextView.setVisibility(View.INVISIBLE);
-        myTextView1.setVisibility(View.VISIBLE);
-        checkBox.setVisibility(View.INVISIBLE);
-        button.setVisibility(View.VISIBLE);
-        button1.setVisibility(View.VISIBLE);
-        OnClickListenerListener listenerforbutton = new OnClickListenerListener();
-
-
-
-        OnCheckedChangeListener listener;
-        listener = new OnCheckedChangeListener();
-        checkBox.setOnCheckedChangeListener(listener);
-
-       // private FirebaseFirestore db;
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference("message"); // Key
-
-        // Attach listener
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Retrieve latest value
-                String message = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error handling
-            }
-        });
-
-        // load
-        //questions = new ArrayList<Question>();
-        ArrayList<Answer> answers = new ArrayList<Answer>();
-        Answer answer = new Answer("test", "tezt", true);
-        Answer answer1 = new Answer("hi", "test", true);
-        answers.add(answer);
-        answers.add(answer1);
-        //questions = db.collection("questions");
-        Question question = new Question("test", "tezt", 50, answers);
-        Question question1 = new Question("test", "call", 60, answers);
-        questions.add(question);
-        questions.add(question1);
-        momentQuestion = questions.get(0).getAnswers();
+                            setQuestions(target.getQuestions());
+                        }
+                    }
+                });
     }
 
-
-    private class OnClickListenerListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-           // TextView myTextView = findViewById(R.id.textView3);
-            Button button = findViewById(R.id.button5);
-            Button button1 = findViewById(R.id.button6);
-            TextView myTextView = findViewById(R.id.textView6);
-            TextView myTextView1 = findViewById(R.id.textView_question);
-            CheckBox checkBox = findViewById(R.id.checkBox_answer);
-            switch (view.getId()) {
-                case R.id.button5:
-
-                    myTextView.setVisibility(View.INVISIBLE);
-                    myTextView1.setVisibility(View.VISIBLE);
-                    checkBox.setVisibility(View.VISIBLE);
-                    button.setVisibility(View.INVISIBLE);
-                    button1.setVisibility(View.INVISIBLE);
-                    break;
-                case R.id.button6:
-
-
-                    break;
-            }
-        }
+    public void setQuestions(ArrayList<Question> q) {
+        this.questions = q;
     }
 
+    public void checkDesire() {
+        // спросить хочет или нет
+    }
 
+    public void showCurrentQuestion() {
 
-
-
-
-
-
-    private class OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            for(i = 0; i < questions.size(); i++) {
-                if (!momentQuestion.get(o).getisCorrect()) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.incorrect), Toast.LENGTH_SHORT).show();
-                    //i++;
-                    o++;
-                    momentQuestion = questions.get(o).getAnswers();
-                    compoundButton.setChecked(!b);
-
-                } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.correct), Toast.LENGTH_SHORT).show();
-                    TextView textView = findViewById(R.id.textView_question);
-                    textView.setText(questions.get(i).getValue());
-                    // i++;
-                    compoundButton.setChecked(!b);
-                }
-            }
-
-
-        }
     }
 
 

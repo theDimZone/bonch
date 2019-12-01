@@ -12,6 +12,15 @@ public class Target {
     private boolean zoomer;
     private GeoPoint location;
     private ArrayList<GeoPoint> pointsArea;
+    private ArrayList<Question> questions;
+
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<Question> questions) {
+        this.questions = questions;
+    }
 
     public String getId() {
         return id;

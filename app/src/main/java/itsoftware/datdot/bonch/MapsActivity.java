@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -35,14 +36,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import itsoftware.datdot.bonch.data.workers.Question;
 import itsoftware.datdot.bonch.data.workers.Target;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -53,6 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    private String lastTargetId = "m";
+    private ArrayList<Question> questions;
+    private int current = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,6 +295,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void findTheNearestPoint(Location location) {
         boolean isFirst = true;
         double minLength = 0;
+        Target minTarget = new Target();
+        minTarget.setId("a");
         for (Target target : targets) {
             double x_1 = target.getLocation().getLatitude();
             double y_1 = target.getLocation().getLongitude();
@@ -294,27 +305,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (isFirst) {
                 isFirst = false;
                 minLength = Math.sqrt(Math.pow(x_2 - x_1, 2) + Math.pow(y_2 - y_1, 2));
+                minTarget = target;
             } else {
                 double nextLength = Math.sqrt(Math.pow(x_2 - x_1, 2) + Math.pow(y_2 - y_1, 2));
-                if (nextLength < minLength) minLength = nextLength;
+                if (nextLength < minLength) {
+                    minLength = nextLength;
+                    minTarget = target;
+                }
             }
         }
         if (minLength < 0.001) {
-            if (isInArea(location)) {
-                startActivity(new Intent(this, QuestionsActivity.class));
-                finish();
-            }
+            //if (isInArea(location, minTarget)) {
+                if(!this.lastTargetId.equals(minTarget.getId())) {
+                    this.earnXpForVisit(minTarget);
+                    this.lastTargetId = minTarget.getId();
+                    this.questions = minTarget.getQuestions();
+                    checkDesire();
+
+                }
+                //this.questions =
+                //startActivity(new Intent(this, QuestionsActivity.class));
+                //finish();
+            //}
         }
     }
 
-    private boolean isInArea(Location location) {
+    private boolean isInArea(Location location, Target target) {
         boolean isFirst = true;
         double min_x = 0;
         double max_x = 0;
         double min_y = 0;
         double max_y = 0;
 
-        for (Target target : targets) {
             if (isFirst) {
                 isFirst = false;
                 min_x = target.getLocation().getLatitude();
@@ -331,9 +353,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     min_y = next_y;
                 } else if (next_y > max_y) max_y = next_y;
             }
+            double current_X = location.getLatitude();
+            double current_Y = location.getLongitude();
+
+            return current_X >= min_x && current_X <= max_x && current_Y >= min_y && current_Y <= max_y;
+    }
+
+    public void setQuestions(ArrayList<Question> q) {
+        this.questions = q;
+    }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    showCurrentQuestion();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
         }
-        double current_X = location.getLatitude();
-        double current_Y = location.getLongitude();
-        return current_X >= min_x && current_X <= max_x && current_Y >= min_y && current_Y <= max_y;
+    };
+
+    public void checkDesire() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Хотите пройти тест на тему этого места?").setPositiveButton("Да", dialogClickListener)
+                .setNegativeButton("Нет", dialogClickListener).show();
+    }
+
+    public void showCurrentQuestion() {
+        // бесконечность не предел!
+    }
+
+    public void earnXpForVisit(Target target) {
+        Toast.makeText(this, "Вы заработали 10 XP!", Toast.LENGTH_LONG);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Важное сообщение!")
+                .setMessage("Вы заработали 15 XP за посещение!")
+
+                .setCancelable(false)
+                .setNegativeButton("ОК",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+       //db.document(target.getId()).
     }
 }

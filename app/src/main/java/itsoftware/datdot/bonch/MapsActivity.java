@@ -236,7 +236,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private boolean isInArea(Location location) {
-        boolean isInArea = true;
+        boolean isInArea = false;
 
         return isInArea;
     }

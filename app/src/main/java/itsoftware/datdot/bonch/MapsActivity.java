@@ -129,6 +129,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case 1:
                 intent = new Intent(this, UsersActivity.class);
                 break;
+            case 2:
+                intent = new Intent(this, ProfileActivity.class);
+                break;
+            case 3:
+                intent = new Intent(this, RecommendationActivity.class);
+                break;
             default:
                 break;
         }

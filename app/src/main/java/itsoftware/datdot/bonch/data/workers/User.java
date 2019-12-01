@@ -6,13 +6,26 @@ import java.util.ArrayList;
 public class User {
     private String nickname;
     private String id;
+    private String email;
     private int experience;
     private int age;
-    private int level;
+    //private int level;
+    private boolean boomer;
+    private boolean zoomer;
 
-    private  ArrayList<String> achievements = new ArrayList<String>();
+    private ArrayList<String> achievements = new ArrayList<String>();
     private ArrayList<String> passed_questions = new ArrayList<String>();
     private ArrayList<String> visited_target = new ArrayList<String>();
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User() {}
 
     public User( String nickname, String id,
                  int experience, int age, int level, ArrayList<String> achievements,
@@ -21,11 +34,27 @@ public class User {
         this.id = id;
         this.experience = experience;
         this.age = age;
-        this.level = level;
+        //this.level = level;
         this.achievements = achievements;
         this.passed_questions = passed_questions;
         this.visited_target = visited_target;
 
+    }
+
+    public boolean isBoomer() {
+        return boomer;
+    }
+
+    public void setBoomer(boolean boomer) {
+        this.boomer = boomer;
+    }
+
+    public boolean isZoomer() {
+        return zoomer;
+    }
+
+    public void setZoomer(boolean zoomer) {
+        this.zoomer = zoomer;
     }
 
     public ArrayList<String> getAchievements() {
@@ -68,10 +97,6 @@ public class User {
         this.age = age;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public String getId() {
         return id;
     }
@@ -83,9 +108,6 @@ public class User {
     }
     public int getAge() {
         return age;
-    }
-    public int getLevel() {
-        return level;
     }
 
     @Override

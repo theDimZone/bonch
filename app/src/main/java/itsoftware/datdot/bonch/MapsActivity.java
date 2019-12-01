@@ -176,12 +176,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (location == null || mMap == null) return;
 
         LatLng there = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng look = there;
+
+        String longitude = getIntent().getStringExtra("longitude");
+        String latitude = getIntent().getStringExtra("latitude");
+
+        if(!latitude.isEmpty()) {
+            look = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
+        }
+
         if (isFirst) {
             isFirst = false;
             getCurrentLocation(there.latitude, there.longitude);
             CameraPosition.Builder builder = new CameraPosition.Builder();
             builder.bearing(location.getBearing());
-            builder.target(there);
+            builder.target(look);
             builder.zoom(17);
             builder.tilt(65);
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));

@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("itsoftware.datdot.bonch", appContext.getPackageName());
+        assertEquals("itsoftware.datdot.bonchhack", appContext.getPackageName());
     }
 }
